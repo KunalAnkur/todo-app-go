@@ -4,12 +4,11 @@ import (
 	"net/http"
 
 	res "github.com/KunalAnkur/todo-app/helper"
-	mongoModel "github.com/KunalAnkur/todo-app/model/mongo_model"
+	service "github.com/KunalAnkur/todo-app/service"
 )
 
 func GetAllTodo(w http.ResponseWriter, r *http.Request) {
-	todoDoc := &mongoModel.Todo{}
-	todos, err := todoDoc.GetAllTodo()
+	todos, err := service.GetAllTodoToResponse()
 	if err != nil {
 		res.ResponseError(w, http.StatusInternalServerError, "Something went wrong")
 	}
@@ -18,17 +17,15 @@ func GetAllTodo(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateTodo(w http.ResponseWriter, r *http.Request) {
-	createTodo := &mongoModel.Todo{}
-	todo, err := createTodo.CreateTodo(r)
+	todo, err := service.CreateTodoToResponse(r)
 	if err != nil {
 		res.ResponseError(w, http.StatusInternalServerError, "Something went wrong")
 	}
-	res.ResponseToCreate(w, http.StatusAccepted, "Your todo's are successfully created in the database", *todo)
+	res.ResponseToCreate(w, http.StatusAccepted, "Your todo's are successfully created in the database", todo)
 }
 
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
-	updatedTodo := &mongoModel.Todo{}
-	err := updatedTodo.UpdateTodoById(r)
+	err := service.UpdateTodoByIdToResponse(r)
 	if err != nil {
 		res.ResponseError(w, http.StatusInternalServerError, "Something went wrong")
 	}
@@ -36,8 +33,7 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
-	deleteTodo := &mongoModel.Todo{}
-	err := deleteTodo.DeleteTodoById(r)
+	err := service.DeleteTodoByIdToResponse(r)
 	if err != nil {
 		res.ResponseError(w, http.StatusInternalServerError, "Something went wrong")
 	}

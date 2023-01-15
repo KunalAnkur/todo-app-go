@@ -1,6 +1,6 @@
 package response
 
-import model "github.com/KunalAnkur/todo-app/model/mongo_model"
+import model "github.com/KunalAnkur/todo-app/model/combine_model"
 
 const SUCCESS_STATUS = "Success"
 const FAIL_STATUS = "Failure"

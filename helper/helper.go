@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	model "github.com/KunalAnkur/todo-app/model/mongo_model"
+	model "github.com/KunalAnkur/todo-app/model/combine_model"
 	"github.com/KunalAnkur/todo-app/response"
 )
 

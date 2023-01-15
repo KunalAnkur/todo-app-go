@@ -1,12 +1,10 @@
 package sqlmodel
 
 import (
-	"encoding/json"
-	"net/http"
 	"strconv"
 
 	"github.com/KunalAnkur/todo-app/config"
-	"github.com/gorilla/mux"
+	model "github.com/KunalAnkur/todo-app/model/combine_model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -25,18 +23,28 @@ func MySqlConnect() {
 	db.AutoMigrate(&Todo{})
 }
 
-func (b *Todo) CreateTodo(r *http.Request) (*Todo, error) {
-	_ = json.NewDecoder(r.Body).Decode(b)
+func (b Todo) CreateTodo(body model.Todo) (model.Todo, error) {
+	b.Message = body.Message
 
 	db.NewRecord(b)
 	db.Create(&b)
-	return b, nil
+	body.ID = strconv.FormatUint(uint64(b.ID), 2)
+
+	return body, nil
 }
 
-func (book Todo) GetAllTodo() ([]Todo, error) {
-	var Books []Todo
-	db.Find(&Books)
-	return Books, nil
+func (todo Todo) GetAllTodo() ([]model.Todo, error) {
+	var todos []Todo
+	db.Find(&todos)
+	var combine_todo []model.Todo
+	for i := 0; i < len(todos); i++ {
+		c_todo := model.Todo{
+			ID:      strconv.FormatUint(uint64(todos[i].ID), 10),
+			Message: todos[i].Message,
+		}
+		combine_todo = append(combine_todo, c_todo)
+	}
+	return combine_todo, nil
 }
 
 func GetTodoById(Id int64) (*Todo, *gorm.DB) {
@@ -45,9 +53,9 @@ func GetTodoById(Id int64) (*Todo, *gorm.DB) {
 	return &getTodo, db
 }
 
-func (todo Todo) DeleteTodoById(r *http.Request) error {
-	params := mux.Vars(r)
-	id := params["bookId"]
+func (todo Todo) DeleteTodoById(todoId string) error {
+
+	id := todoId
 	ID, err := strconv.ParseInt(id, 0, 0)
 	if err != nil {
 		return err
@@ -56,18 +64,15 @@ func (todo Todo) DeleteTodoById(r *http.Request) error {
 	return nil
 }
 
-func (todo Todo) UpdateTodoById(r *http.Request) error {
-	var updateBook = &Todo{}
-	_ = json.NewDecoder(r.Body).Decode(updateBook)
-	params := mux.Vars(r)
-	bookId := params["bookId"]
-	ID, err := strconv.ParseInt(bookId, 0, 0)
+func (todo Todo) UpdateTodoById(todoID string, combine_model model.Todo) error {
+
+	ID, err := strconv.ParseInt(todoID, 0, 0)
 	if err != nil {
 		return err
 	}
 	todoDetails, db := GetTodoById(ID)
-	if updateBook.Message != "" {
-		todoDetails.Message = updateBook.Message
+	if combine_model.Message != "" {
+		todoDetails.Message = combine_model.Message
 	}
 	db.Save(&todoDetails)
 	return nil

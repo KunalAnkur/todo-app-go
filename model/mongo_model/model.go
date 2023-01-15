@@ -2,11 +2,9 @@ package mongomodel
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
 
 	"github.com/KunalAnkur/todo-app/config"
-	"github.com/gorilla/mux"
+	model "github.com/KunalAnkur/todo-app/model/combine_model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,48 +22,48 @@ func MongoConnect() {
 
 }
 
-func (todo Todo) GetAllTodo() ([]Todo, error) {
+func (todo Todo) GetAllTodo() ([]model.Todo, error) {
 	curr, err := collection.Find(context.Background(), bson.D{{}})
 
-	var todos []Todo
+	var todos []model.Todo
 	if err != nil {
 		return todos, err
 	}
 	for curr.Next(context.Background()) {
-
+		var combine_todo model.Todo
 		err := curr.Decode(&todo)
 		if err != nil {
 
 			return todos, err
 		}
-
-		todos = append(todos, todo)
+		combine_todo.ID = todo.ID.String()
+		combine_todo.Message = todo.Message
+		todos = append(todos, combine_todo)
 	}
 
 	defer curr.Close(context.Background())
 	return todos, nil
 }
 
-func (todo *Todo) CreateTodo(r *http.Request) (*Todo, error) {
-	_ = json.NewDecoder(r.Body).Decode(&todo)
+func (todo Todo) CreateTodo(body model.Todo) (model.Todo, error) {
+	var combine_todo model.Todo
+	todo.Message = body.Message
 	_, err := collection.InsertOne(context.Background(), todo)
 
 	if err != nil {
-		return todo, err
+		return combine_todo, err
 	}
-
-	return todo, err
+	combine_todo.ID = todo.ID.String()
+	combine_todo.Message = todo.Message
+	return combine_todo, err
 
 }
 
-func (todo Todo) UpdateTodoById(r *http.Request) error {
-	params := mux.Vars(r)
-	_ = json.NewDecoder(r.Body).Decode(&todo)
-
-	id, _ := primitive.ObjectIDFromHex(params["id"])
+func (todo Todo) UpdateTodoById(todoID string, combine_todo model.Todo) error {
+	id, _ := primitive.ObjectIDFromHex(todoID)
 	filter := bson.M{"_id": id}
 
-	update := bson.M{"$set": bson.M{"message": todo.Message}}
+	update := bson.M{"$set": bson.M{"message": combine_todo.Message}}
 
 	_, err := collection.UpdateOne(context.Background(), filter, update)
 
@@ -76,9 +74,9 @@ func (todo Todo) UpdateTodoById(r *http.Request) error {
 	return nil
 }
 
-func (todo Todo) DeleteTodoById(r *http.Request) error {
-	params := mux.Vars(r)
-	id, _ := primitive.ObjectIDFromHex(params["id"])
+func (todo Todo) DeleteTodoById(todoId string) error {
+
+	id, _ := primitive.ObjectIDFromHex(todoId)
 	filter := bson.M{"_id": id}
 	_, err := collection.DeleteOne(context.Background(), filter)
 
