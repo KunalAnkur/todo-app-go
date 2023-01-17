@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	model "github.com/KunalAnkur/todo-app/model/combine_model"
-	"github.com/KunalAnkur/todo-app/response"
+	model "github.com/KunalAnkur/todo-app-go/model/combine_model"
+	"github.com/KunalAnkur/todo-app-go/response"
 )
 
 var DATABASE_INDEX = 1

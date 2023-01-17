@@ -1,4 +1,4 @@
-module github.com/KunalAnkur/todo-app
+module github.com/KunalAnkur/todo-app-go
 
 go 1.19
 

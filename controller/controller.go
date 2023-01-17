@@ -3,8 +3,8 @@ package controller
 import (
 	"net/http"
 
-	res "github.com/KunalAnkur/todo-app/helper"
-	service "github.com/KunalAnkur/todo-app/service"
+	res "github.com/KunalAnkur/todo-app-go/helper"
+	service "github.com/KunalAnkur/todo-app-go/service"
 )
 
 func GetAllTodo(w http.ResponseWriter, r *http.Request) {

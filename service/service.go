@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/KunalAnkur/todo-app/helper"
-	model "github.com/KunalAnkur/todo-app/model/combine_model"
-	mongomodel "github.com/KunalAnkur/todo-app/model/mongo_model"
-	mysqlmodel "github.com/KunalAnkur/todo-app/model/sql_model"
+	"github.com/KunalAnkur/todo-app-go/helper"
+	model "github.com/KunalAnkur/todo-app-go/model/combine_model"
+	mongomodel "github.com/KunalAnkur/todo-app-go/model/mongo_model"
+	mysqlmodel "github.com/KunalAnkur/todo-app-go/model/sql_model"
 	"github.com/gorilla/mux"
 )
 

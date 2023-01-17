@@ -3,8 +3,8 @@ package mongomodel
 import (
 	"context"
 
-	"github.com/KunalAnkur/todo-app/config"
-	model "github.com/KunalAnkur/todo-app/model/combine_model"
+	"github.com/KunalAnkur/todo-app-go/config"
+	model "github.com/KunalAnkur/todo-app-go/model/combine_model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

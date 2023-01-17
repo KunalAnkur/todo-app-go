@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/KunalAnkur/todo-app/helper"
-	mongomodel "github.com/KunalAnkur/todo-app/model/mongo_model"
-	mysqlmodel "github.com/KunalAnkur/todo-app/model/sql_model"
-	"github.com/KunalAnkur/todo-app/router"
+	"github.com/KunalAnkur/todo-app-go/helper"
+	mongomodel "github.com/KunalAnkur/todo-app-go/model/mongo_model"
+	mysqlmodel "github.com/KunalAnkur/todo-app-go/model/sql_model"
+	"github.com/KunalAnkur/todo-app-go/router"
 )
 
 func init() {

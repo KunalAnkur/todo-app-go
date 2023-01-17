@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/KunalAnkur/todo-app/controller"
+	"github.com/KunalAnkur/todo-app-go/controller"
 	"github.com/gorilla/mux"
 )
 
