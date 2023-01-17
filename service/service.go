@@ -13,18 +13,18 @@ import (
 
 type DataStore interface {
 	GetAllTodo() ([]model.Todo, error)
-	CreateTodo() (*model.Todo, error)
-	UpdateTodoById() error
-	DeleteTodoById() error
+	CreateTodo(model.Todo) (model.Todo, error)
+	UpdateTodoById(string, model.Todo) error
+	DeleteTodoById(string) error
 }
 
 // type databases interface {
 // 	mongomodel.Todo | mysqlmodel.Todo
 // }
 
-// func getAllTodosFromDataStore(d DataStore) ([]model.Todo, error) {
-// 	return d.GetAllTodo()
-// }
+func getAllTodosFromDataStore(d DataStore) ([]model.Todo, error) {
+	return d.GetAllTodo()
+}
 
 func GetAllTodoToResponse() ([]model.Todo, error) {
 	switch helper.DATABASE_INDEX {

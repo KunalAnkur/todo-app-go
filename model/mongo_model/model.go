@@ -87,3 +87,10 @@ func (todo Todo) DeleteTodoById(todoId string) error {
 	return nil
 
 }
+
+// type DataStore interface {
+// 	GetAllTodo() ([]model.Todo, error)
+// 	CreateTodo(model.Todo) (*model.Todo, error)
+// 	UpdateTodoById(string, model.Todo) error
+// 	DeleteTodoById(string) error
+// }
